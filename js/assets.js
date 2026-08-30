@@ -1,3 +1,47 @@
+import { withAssetBase } from './asset-url.js';
+import backgroundTem1 from '../assets/backgrounds/tem1_bg1.jpg';
+import templateCover from '../assets/backgrounds/cover_template01.png';
+import light1 from '../assets/decorations/back/tem1_light1.png';
+import light2 from '../assets/decorations/back/tem1_light2.png';
+import light3 from '../assets/decorations/back/tem1_light3.png';
+import light4 from '../assets/decorations/back/tem1_light4.png';
+import light5 from '../assets/decorations/back/tem1_light5.png';
+import light6 from '../assets/decorations/back/tem1_light6.png';
+import light7 from '../assets/decorations/back/tem1_light7.png';
+import lid1 from '../assets/decorations/back/tem1_guogai1.png';
+import lid2 from '../assets/decorations/back/tem1_guogai2.png';
+import lid3 from '../assets/decorations/back/tem1_guogai3.png';
+import plate1 from '../assets/decorations/back/tem1_plate1.png';
+import plate2 from '../assets/decorations/back/tem1_plate2.png';
+import plate3 from '../assets/decorations/back/tem1_plate3.png';
+import fiveStars from '../assets/decorations/front/y2k-food-badge-five-stars.png';
+
+// Vite 只会复制可以静态分析到的资源。注册表是运行时数据，因此在这里显式导入每一张
+// 内置素材，并仍保留可读的路径 key，供以后新增素材时复用 assetUrl()。
+const bundledAssetUrls = {
+  'assets/backgrounds/tem1_bg1.jpg': backgroundTem1,
+  'assets/backgrounds/cover_template01.png': templateCover,
+  'assets/decorations/back/tem1_light1.png': light1,
+  'assets/decorations/back/tem1_light2.png': light2,
+  'assets/decorations/back/tem1_light3.png': light3,
+  'assets/decorations/back/tem1_light4.png': light4,
+  'assets/decorations/back/tem1_light5.png': light5,
+  'assets/decorations/back/tem1_light6.png': light6,
+  'assets/decorations/back/tem1_light7.png': light7,
+  'assets/decorations/back/tem1_guogai1.png': lid1,
+  'assets/decorations/back/tem1_guogai2.png': lid2,
+  'assets/decorations/back/tem1_guogai3.png': lid3,
+  'assets/decorations/back/tem1_plate1.png': plate1,
+  'assets/decorations/back/tem1_plate2.png': plate2,
+  'assets/decorations/back/tem1_plate3.png': plate3,
+  'assets/decorations/front/y2k-food-badge-five-stars.png': fiveStars
+};
+
+// 同一个解析器供 DOM 预览、CSS 背景和 Canvas 导出使用。
+export function assetUrl(path) {
+  return withAssetBase(bundledAssetUrls[path] || path);
+}
+
 // 素材注册表只登记 assets 文件夹中真实存在的装饰文件；不存在的示意素材不进入 Maker。
 export const ASSETS = {
   // 「背景素材」缩略图由这里的数据自动生成。以后新增背景时，只需把图片放进

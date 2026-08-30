@@ -1,4 +1,5 @@
 import { LAYOUTS } from './layouts.js';
+import { assetUrl } from './assets.js';
 
 // 首页的卡片数据只描述“浏览库”；真正进入 Maker 时由 layouts.js 决定版式参数。
 const LIBRARY_ITEMS = [
@@ -22,7 +23,7 @@ grid.classList.toggle('template01-grid', LIBRARY_ITEMS.length === 1 && LIBRARY_I
 grid.innerHTML = LIBRARY_ITEMS.map((template, index) => `
   <article class="library-card-wrap ${template.id === 'template01' ? 'template01-card-wrap' : ''}">
     <button class="library-card ${template.id === 'template01' ? 'template01-card' : ''}" type="button" data-template-id="${template.id}" aria-label="查看 ${template.name} 模板详情">
-      <span class="library-preview preview-${(index % 6) + 1} ${template.id === 'template01' ? 'preview-template01' : ''}" aria-hidden="true">${template.id === 'template01' ? '<img class="template01-cover-image" src="assets/backgrounds/cover_template01.png" alt="">' : ''}<span>${template.preview}</span></span>
+      <span class="library-preview preview-${(index % 6) + 1} ${template.id === 'template01' ? 'preview-template01' : ''}" aria-hidden="true">${template.id === 'template01' ? `<img class="template01-cover-image" src="${assetUrl('assets/backgrounds/cover_template01.png')}" alt="">` : ''}<span>${template.preview}</span></span>
       <span class="library-card-info"><strong>${template.name}</strong><span class="library-card-tags">${renderTags(template.tags)}</span></span>
     </button>
   </article>`).join('');
@@ -33,7 +34,7 @@ function openDetails(id) {
   const index = LIBRARY_ITEMS.findIndex(item => item.id === id);
   activeTemplateId = template.id;
   dialog.dataset.templateId = activeTemplateId;
-  modalContent.innerHTML = `<div class="modal-preview preview-${(index % 6) + 1} ${template.id === 'template01' ? 'preview-template01' : ''}" aria-hidden="true">${template.id === 'template01' ? '<img class="template01-cover-image" src="assets/backgrounds/cover_template01.png" alt="">' : ''}<span>${template.preview}</span></div><div class="modal-copy"><h2 id="modal-template-name">${template.name}</h2><p id="modal-template-description">${template.description}</p><button class="button primary modal-use-template" type="button">使用此模板</button></div>`;
+  modalContent.innerHTML = `<div class="modal-preview preview-${(index % 6) + 1} ${template.id === 'template01' ? 'preview-template01' : ''}" aria-hidden="true">${template.id === 'template01' ? `<img class="template01-cover-image" src="${assetUrl('assets/backgrounds/cover_template01.png')}" alt="">` : ''}<span>${template.preview}</span></div><div class="modal-copy"><h2 id="modal-template-name">${template.name}</h2><p id="modal-template-description">${template.description}</p><button class="button primary modal-use-template" type="button">使用此模板</button></div>`;
   modalContent.querySelector('.modal-use-template').addEventListener('click', () => {
     if (!activeTemplateId) return;
     location.assign(`maker.html?template=${encodeURIComponent(activeTemplateId)}`);

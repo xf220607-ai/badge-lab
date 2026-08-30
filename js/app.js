@@ -1,4 +1,4 @@
-import { ASSETS } from './assets.js';
+import { ASSETS, assetUrl } from './assets.js';
 import { getLayout } from './layouts.js';
 import { removeBackground as removeImageBackground } from '@imgly/background-removal';
 
@@ -75,7 +75,7 @@ function slotChoices(slot) {
   const allowedIds = new Set(['none', ...(slot?.assetIds || [])]);
   return ASSETS.decorations.filter(asset => allowedIds.has(asset.id));
 }
-function backgroundAssetSrc(asset) { return asset?.path || asset?.src || ''; }
+function backgroundAssetSrc(asset) { return assetUrl(asset?.path || asset?.src || ''); }
 function activeBackground() {
   const background = state.background;
   if (background.mode === 'preset') {
@@ -115,7 +115,7 @@ function renderDecoNodes(kind, layer) {
       if (!slotAllowsAsset(slot, id) || !asset.path) return '';
       const transform = slotTransform(slot, id);
       const characterZ = templateLayer('character').zIndex, zIndex = kind === 'back' ? Math.min(slot.zIndex, characterZ - 1) : Math.max(slot.zIndex, characterZ + 1);
-      return `<img class="template-decoration" src="${asset.path}" alt="" aria-hidden="true" style="--x:${canvasPercent(transform.x)}%;--y:${canvasPercent(transform.y, 'y')}%;--w:${canvasPercent(transform.width)}%;--h:${canvasPercent(transform.height, 'y')}%;--rotation:${transform.rotation}deg;--scale:${transform.scale};--z:${zIndex}">`;
+      return `<img class="template-decoration" src="${assetUrl(asset.path)}" alt="" aria-hidden="true" style="--x:${canvasPercent(transform.x)}%;--y:${canvasPercent(transform.y, 'y')}%;--w:${canvasPercent(transform.width)}%;--h:${canvasPercent(transform.height, 'y')}%;--rotation:${transform.rotation}deg;--scale:${transform.scale};--z:${zIndex}">`;
     }
     const p = layout[`${kind}Positions`]?.[i];
     if (!p || !asset.icon) return '';
@@ -273,7 +273,7 @@ function renderPreview() {
   canvasEl.innerHTML = `${renderDecoNodes('back', 2)}${character}${renderDecoNodes('front', 4)}<div class="canvas-accent"></div><div class="canvas-title">${layout.text.content}</div>`;
   document.querySelectorAll('.tabs button').forEach(btn => btn.setAttribute('aria-selected', btn.dataset.tab === state.activeTab));
 }
-function assetChoices(items, selected) { return `<div class="choice-grid">${items.map(item => `<button class="asset-choice ${item.id === selected ? 'selected' : ''}" data-choice="${item.id}" type="button">${item.path ? `<img class="asset-preview" src="${item.path}" alt="${item.label || item.name}"><small>${item.name}</small>` : item.icon ? `<span class="asset-icon" style="--asset-color:${item.color || 'var(--ink)'}">${item.icon}</span><small>${item.name}</small>` : `<span class="asset-none-icon" aria-hidden="true">⊘</span><small>${item.name}</small>`}</button>`).join('')}</div>`; }
+function assetChoices(items, selected) { return `<div class="choice-grid">${items.map(item => `<button class="asset-choice ${item.id === selected ? 'selected' : ''}" data-choice="${item.id}" type="button">${item.path ? `<img class="asset-preview" src="${assetUrl(item.path)}" alt="${item.label || item.name}"><small>${item.name}</small>` : item.icon ? `<span class="asset-icon" style="--asset-color:${item.color || 'var(--ink)'}">${item.icon}</span><small>${item.name}</small>` : `<span class="asset-none-icon" aria-hidden="true">⊘</span><small>${item.name}</small>`}</button>`).join('')}</div>`; }
 // 每条 backgrounds 配置都复用同一个缩略图按钮；增加素材时无需修改 Maker 核心逻辑。
 function backgroundAssetButton(item) {
   const selected = state.background.mode === 'preset' && state.background.assetId === item.id;
@@ -511,7 +511,7 @@ document.querySelector('#confirm-cutout').onclick = e => {
   update();
 };
 // Canvas 导出独立绘制图层，只导出中央设计，不带网页 UI 或编辑器出血参考线。
-function loadImage(src) { return new Promise((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = reject; image.src = src; }); }
+function loadImage(src) { return new Promise((resolve, reject) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => reject(new Error(`无法加载导出素材：${src}`)); image.src = assetUrl(src); }); }
 function drawConfiguredImage(ctx, layer, image) {
   const boxWidth = layer.width * layer.scale, boxHeight = layer.height * layer.scale;
   const ratio = Math.min(boxWidth / image.naturalWidth, boxHeight / image.naturalHeight);
@@ -536,7 +536,7 @@ async function drawTemplateDecorations(ctx, kind) {
   for (let i = 0; i < state[kind].length; i += 1) {
     const id = state[kind][i], slot = layout.decorationSlots[kind]?.[i], asset = selectedAsset(id);
     if (id === 'none' || !slotAllowsAsset(slot, id) || !asset.path) continue;
-    drawConfiguredImage(ctx, slotTransform(slot, id), await loadImage(asset.path));
+    drawConfiguredImage(ctx, slotTransform(slot, id), await loadImage(assetUrl(asset.path)));
   }
 }
 async function exportTemplate01(ctx) {
