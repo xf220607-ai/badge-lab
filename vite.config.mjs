@@ -7,6 +7,7 @@ const isolationHeaders = {
 };
 
 export default defineConfig({
+  base: '/badge-lab/',
   server: { headers: isolationHeaders },
   preview: { headers: isolationHeaders },
   build: {
