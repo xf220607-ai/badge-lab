@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>吧唧的衣橱 · 自定义吧唧制作间</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/retro-visual-system.css">
+  <link rel="stylesheet" href="css/wardrobe-home.css">
+  <link rel="stylesheet" href="css/wardrobe-polish.css">
+</head>
+<body class="home-page">
+  <header class="library-header" aria-label="页面顶部">
+    <div class="library-header-inner">
+      <div class="library-brand-block">
+        <a class="library-brand" href="index.html">吧唧衣橱</a>
+      </div>
+      <nav class="library-nav" aria-label="主导航">
+        <a class="retro-nav-item" href="#styles">挑选吧唧</a><a class="retro-nav-item" href="#styles" aria-current="page">小衣橱</a><a class="retro-nav-item" href="#">我的收藏</a>
+      </nav>
+    </div>
+  </header>
+  <main class="library-main">
+    <section class="wardrobe-hero" aria-labelledby="page-title">
+      <p class="wardrobe-eyebrow">BADGE DRESS-UP ROOM</p>
+      <h1 id="page-title">吧唧的衣橱</h1>
+      <p class="wardrobe-lead">给喜欢的吧唧，换一件今天想穿的衣服。</p>
+      <img class="wardrobe-artwork" src="assets/backgrounds/web_bg.jpg" alt="手绘的吧唧与收纳小物插画">
+    </section>
+    <p class="library-prompt">从衣架上挑一件，开始制作吧～</p>
+    <section id="styles" aria-label="模板浏览">
+      <div class="library-grid template01-grid" id="template-grid">
+        <article class="library-card-wrap template01-card-wrap"><button class="library-card template01-card" type="button" data-template-id="template01"><span class="library-preview preview-template01" aria-hidden="true"><img class="template01-cover-image" src="assets/backgrounds/cover_template01.png" alt=""></span><span class="library-card-info"><strong>请品尝</strong><span class="library-card-tags"><small>圆形吧唧</small><small>y2k</small></span></span></button></article>
+      </div>
+    </section>
+  </main>
+  <dialog id="template-dialog" class="template-dialog" aria-labelledby="modal-template-name" aria-describedby="modal-template-description"><section class="template-modal"><div class="template-modal-titlebar" aria-hidden="true"><span>Template Preview</span></div><button class="modal-close" type="button" aria-label="关闭模板预览">×</button><div id="template-modal-content"></div></section></dialog>
+  <script type="module" src="js/home.js"></script>
+</body></html>

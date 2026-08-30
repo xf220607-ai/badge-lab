@@ -1,0 +1,776 @@
+/*
+ * Badge Lab Maker — retro desktop visual system
+ * Functionality and canvas composition remain unchanged. This file only
+ * applies the shared visual tokens to the Maker interface.
+ */
+
+.maker-page {
+  min-height: 100vh;
+  color: var(--color-text);
+  background:
+    linear-gradient(rgba(255,255,255,.22) 1px, transparent 1px) 0 0 / 16px 16px,
+    var(--color-bg);
+  font-family: var(--font-body);
+}
+
+/* Maker toolbar */
+.maker-page .maker-header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  min-height: 64px;
+  padding: 10px clamp(14px, 4vw, 48px);
+  gap: var(--space-md);
+  background: var(--color-panel);
+  border-bottom: var(--border-thick);
+  box-shadow: inset 0 1px 0 var(--color-white), inset 0 -1px 0 #747b82;
+}
+
+.maker-page .brand {
+  position: relative;
+  padding: 8px 14px 8px 36px;
+  color: var(--color-white);
+  background: var(--color-primary);
+  border: var(--border-thick);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--bevel-pressed);
+  font-family: var(--font-ui);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .brand::before {
+  position: absolute;
+  top: 50%;
+  left: 11px;
+  width: 14px;
+  height: 12px;
+  background: var(--color-accent);
+  border: 1px solid var(--color-border);
+  box-shadow: inset 1px 1px 0 var(--color-white);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.maker-page .maker-actions {
+  display: flex;
+  gap: 7px;
+  padding: 3px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  background: #bbbdbb;
+  border: var(--border-thin);
+  box-shadow: var(--bevel-pressed);
+}
+
+.maker-page .button,
+.maker-page .maker-actions .button {
+  min-height: 34px;
+  padding: 7px 12px;
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: var(--border-thin);
+  border-radius: var(--radius-sm);
+  box-shadow: 2px 2px 0 var(--color-border), var(--bevel-raised);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  text-decoration: none;
+  transition: transform 80ms ease, background-color 80ms ease, box-shadow 80ms ease;
+}
+
+.maker-page .button:hover,
+.maker-page .maker-actions .button:hover {
+  background: #ebeae4;
+  box-shadow: 3px 3px 0 var(--color-border), var(--bevel-raised);
+  transform: translate(-1px, -1px);
+}
+
+.maker-page .button:active,
+.maker-page .maker-actions .button:active {
+  box-shadow: var(--bevel-pressed);
+  transform: translate(2px, 2px);
+}
+
+.maker-page .button:focus-visible,
+.maker-page button:focus-visible,
+.maker-page input:focus-visible {
+  outline: 2px dotted var(--color-border);
+  outline-offset: 3px;
+}
+
+.maker-page .button.primary,
+.maker-page #export-button {
+  color: var(--color-white);
+  background: var(--color-primary);
+  box-shadow: 2px 2px 0 var(--color-border), inset 1px 1px 0 #83c1f4, inset -1px -1px 0 var(--color-primary-dark);
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .button.primary:hover,
+.maker-page #export-button:hover {
+  background: #0b67c7;
+}
+
+.maker-page .button:disabled,
+.maker-page .button.disabled {
+  color: #707780;
+  background: #c8c8c2;
+  box-shadow: var(--bevel-raised);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Main workspace */
+.maker-page .maker-main {
+  width: min(100%, 1240px);
+  max-width: none;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+.maker-page .preview-stage {
+  position: relative;
+  display: grid;
+  padding: 46px 28px 28px;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-panel);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-retro-lg), var(--bevel-raised);
+}
+
+.maker-page .preview-stage::before {
+  position: absolute;
+  z-index: 3;
+  top: 3px;
+  right: 3px;
+  left: 3px;
+  height: 30px;
+  padding: 6px 56px 5px 9px;
+  color: var(--color-white);
+  background: var(--color-primary);
+  border-bottom: var(--border-thin);
+  content: "CANVAS PREVIEW / BADGE LAB";
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  line-height: 18px;
+  text-align: left;
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .preview-stage::after {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 10px;
+  background:
+    linear-gradient(to right,
+      var(--color-panel) 0 9px,
+      transparent 9px 14px,
+      var(--color-panel) 14px 23px,
+      transparent 23px 28px,
+      var(--color-panel) 28px 38px);
+  content: "";
+}
+
+.maker-page .design-canvas {
+  width: min(76vw, 680px);
+  max-width: 100%;
+  background-color: transparent;
+  border: 0;
+  outline: 0;
+  box-shadow: none; /* Removes the two grey bottom/right offset lines. */
+}
+
+/* Control window */
+.maker-page .customizer {
+  position: relative;
+  margin-top: 28px;
+  padding-top: 31px;
+  overflow: hidden;
+  background: var(--color-panel);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-retro-lg), var(--bevel-raised);
+}
+
+.maker-page .customizer::before {
+  position: absolute;
+  z-index: 2;
+  top: 3px;
+  right: 3px;
+  left: 3px;
+  height: 27px;
+  padding: 5px 9px;
+  color: var(--color-white);
+  background: var(--color-primary-dark);
+  border-bottom: var(--border-thin);
+  content: "CONTROL PANEL / TEMPLATE SETTINGS";
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  line-height: 17px;
+  text-align: left;
+  text-shadow: 1px 1px 0 #001b43;
+}
+
+.maker-page .tabs {
+  display: flex;
+  padding: 4px 4px 0;
+  gap: 2px;
+  overflow-x: auto;
+  background: #b9bbb9;
+  border-bottom: var(--border-thick);
+  box-shadow: var(--bevel-pressed);
+  scrollbar-width: thin;
+}
+
+.maker-page .tabs button {
+  min-height: 37px;
+  padding: 8px 13px;
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: var(--border-thin);
+  border-bottom: 0;
+  box-shadow: var(--bevel-raised);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.maker-page .tabs button:hover {
+  color: var(--color-primary-dark);
+  background: #ebeae4;
+}
+
+.maker-page .tabs button[aria-selected="true"] {
+  color: var(--color-white);
+  background: var(--color-primary);
+  box-shadow: var(--bevel-pressed);
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .controls {
+  min-height: 190px;
+  padding: 24px;
+  color: var(--color-text);
+  background: var(--color-panel-raised);
+  box-shadow: inset 1px 1px 0 var(--color-white);
+}
+
+.maker-page .control-heading {
+  display: flex;
+  margin: 0 0 12px;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.maker-page .control-heading::before {
+  width: 11px;
+  height: 11px;
+  flex: 0 0 auto;
+  background: var(--color-primary);
+  border: var(--border-thin);
+  box-shadow: inset 1px 1px 0 #9ed5ff;
+  content: "";
+}
+
+.maker-page .control-copy {
+  margin: -3px 0 18px;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Asset and color selectors */
+.maker-page .background-option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 190px));
+  gap: 12px;
+}
+
+.maker-page .background-option {
+  position: relative;
+  display: grid;
+  min-height: 112px;
+  padding: 10px;
+  place-items: center;
+  gap: 8px;
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: var(--border-thin);
+  border-radius: var(--radius-sm);
+  box-shadow: 2px 2px 0 rgba(7,21,47,.75), var(--bevel-raised);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.maker-page .background-option:hover {
+  background: #e9e8e2;
+  transform: translate(-1px, -1px);
+}
+
+.maker-page .background-option:active,
+.maker-page .background-option.selected {
+  box-shadow: var(--bevel-pressed);
+  transform: translate(1px, 1px);
+}
+
+.maker-page .background-color-option {
+  overflow: hidden;
+}
+
+.maker-page .background-color-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.maker-page .background-color-option:focus-within {
+  outline: 2px dotted var(--color-border);
+  outline-offset: 3px;
+}
+
+.maker-page .background-option.selected {
+  color: var(--color-white);
+  background: var(--color-primary);
+  outline: 2px solid var(--color-border);
+  outline-offset: 2px;
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .background-color-preview,
+.maker-page .background-upload-preview,
+.maker-page .background-option-preview {
+  display: grid;
+  width: 100%;
+  height: 66px;
+  place-items: center;
+  object-fit: cover;
+  color: var(--color-primary-dark);
+  background-color: var(--background-color, #fff);
+  border: 1px solid #747b82;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,.75);
+}
+
+.maker-page .background-upload-preview {
+  background:
+    linear-gradient(45deg, #d7d7d7 25%, transparent 25% 75%, #d7d7d7 75%) 0 0 / 12px 12px,
+    #fff;
+  font-size: 34px;
+}
+
+.maker-page .background-assets-panel {
+  margin-top: 18px;
+  padding: 14px;
+  background: #bbbdbb;
+  border: var(--border-thin);
+  box-shadow: var(--bevel-pressed);
+}
+
+.maker-page .background-assets-panel h3 {
+  margin: 0 0 12px;
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: 13px;
+}
+
+.maker-page .background-asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 170px));
+  gap: 10px;
+}
+
+.maker-page .background-asset-choice {
+  min-height: 104px;
+}
+
+.maker-page .background-assets-empty {
+  margin: 0;
+  padding: 13px;
+  color: var(--color-muted);
+  background: var(--color-panel-raised);
+  border: 1px solid #747b82;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.maker-page .choice-grid {
+  gap: 10px;
+}
+
+.maker-page .asset-choice,
+.maker-page .color-choice {
+  min-height: 82px;
+  padding: 9px;
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: var(--border-thin);
+  border-radius: var(--radius-sm);
+  box-shadow: 2px 2px 0 rgba(7,21,47,.75), var(--bevel-raised);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  transition: transform 80ms ease, background-color 80ms ease;
+}
+
+.maker-page .asset-choice:hover,
+.maker-page .color-choice:hover {
+  background: #e9e8e2;
+  transform: translate(-1px, -1px);
+}
+
+.maker-page .asset-choice:active,
+.maker-page .color-choice:active {
+  box-shadow: var(--bevel-pressed);
+  transform: translate(1px, 1px);
+}
+
+.maker-page .asset-choice.selected,
+.maker-page .color-choice.selected {
+  color: var(--color-white);
+  background: var(--color-primary);
+  outline: 2px solid var(--color-border);
+  outline-offset: 2px;
+  box-shadow: var(--bevel-pressed);
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .asset-preview {
+  padding: 4px;
+  background:
+    linear-gradient(45deg, #d7d7d7 25%, transparent 25% 75%, #d7d7d7 75%) 0 0 / 12px 12px,
+    #fff;
+  border: 1px solid #747b82;
+}
+
+.maker-page .asset-none-icon {
+  color: var(--color-muted);
+}
+
+.maker-page .slot-selector {
+  padding: 3px;
+  gap: 3px;
+  width: max-content;
+  background: #bbbdbb;
+  border: var(--border-thin);
+  box-shadow: var(--bevel-pressed);
+}
+
+.maker-page .slot-selector button,
+.maker-page .segment button {
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: var(--border-thin);
+  box-shadow: var(--bevel-raised);
+  font-family: var(--font-ui);
+  font-weight: 700;
+}
+
+.maker-page .slot-selector button {
+  width: 36px;
+  height: 32px;
+}
+
+.maker-page .slot-selector button.selected,
+.maker-page .segment button.selected {
+  color: var(--color-white);
+  background: var(--color-primary);
+  box-shadow: var(--bevel-pressed);
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .field-row {
+  margin: 15px 0;
+  gap: 12px;
+}
+
+.maker-page .field-row label,
+.maker-page .pattern-color,
+.maker-page .transform-field {
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.maker-page .segment {
+  padding: 3px;
+  gap: 2px;
+  background: #bbbdbb;
+  border: var(--border-thin);
+  box-shadow: var(--bevel-pressed);
+}
+
+.maker-page .segment button,
+.maker-page .segment button:last-child {
+  min-height: 31px;
+  padding: 6px 12px;
+  border: var(--border-thin);
+}
+
+.maker-page .native-color {
+  width: 58px;
+  height: 36px;
+  padding: 3px;
+  background: var(--color-panel);
+  border: var(--border-thin);
+  box-shadow: var(--bevel-pressed);
+}
+
+.maker-page input[type="range"] {
+  height: 18px;
+  accent-color: var(--color-primary);
+}
+
+.maker-page .transform-field output {
+  padding: 2px 5px;
+  color: var(--color-primary-dark);
+  background: var(--color-white);
+  border: 1px solid #737980;
+  font-family: var(--font-ui);
+  font-size: 11px;
+}
+
+.maker-page .delete-button {
+  color: #7d111b;
+}
+
+/* Local cutout dialog */
+.maker-page dialog {
+  width: min(92vw, 560px);
+  max-width: 560px;
+}
+
+.maker-page dialog::backdrop {
+  background: rgba(7, 21, 47, .68);
+}
+
+.maker-page .cutout-panel {
+  position: relative;
+  padding: 48px 22px 22px;
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-retro-lg), var(--bevel-raised);
+}
+
+.maker-page .cutout-panel::before {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  left: 3px;
+  height: 30px;
+  padding: 6px 9px;
+  color: var(--color-white);
+  background: var(--color-primary);
+  border-bottom: var(--border-thin);
+  content: "LOCAL CUTOUT PREVIEW";
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  line-height: 18px;
+  text-shadow: 1px 1px 0 var(--color-primary-dark);
+}
+
+.maker-page .cutout-panel .eyebrow {
+  display: none;
+}
+
+.maker-page .cutout-panel h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-ui);
+}
+
+.maker-page .cutout-panel p {
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.maker-page .cutout-panel canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: var(--border-thick);
+  box-shadow: var(--bevel-pressed);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.maker-page .cutout-canvas-wrap {
+  width: min(100%, 420px);
+  margin: 14px auto 8px;
+  background: repeating-conic-gradient(#d9d9d9 0 25%, #fff 0 50%) 0 / 20px 20px;
+}
+
+.maker-page .cutout-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding: 9px;
+  background: #e7e8ea;
+  border: var(--border-thin);
+  box-shadow: var(--bevel-pressed);
+  font-family: var(--font-ui);
+  font-size: 11px;
+}
+
+.maker-page .cutout-tool-group {
+  display: flex;
+}
+
+.maker-page .cutout-tool,
+.maker-page .cutout-reset {
+  min-height: 32px;
+  padding: 5px 9px;
+  color: var(--color-text);
+  background: var(--color-panel);
+  border: var(--border-thin);
+  box-shadow: var(--bevel-raised);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.maker-page .cutout-tool + .cutout-tool {
+  margin-left: -1px;
+}
+
+.maker-page .cutout-tool.is-active {
+  color: var(--color-white);
+  background: var(--color-primary);
+  box-shadow: var(--bevel-pressed);
+}
+
+.maker-page .cutout-tool:focus-visible,
+.maker-page .cutout-reset:focus-visible,
+.maker-page .cutout-panel canvas:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.maker-page .cutout-tool:disabled,
+.maker-page .cutout-reset:disabled,
+.maker-page .brush-size:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.maker-page .brush-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.maker-page .brush-size input {
+  width: 92px;
+}
+
+.maker-page .brush-size output {
+  min-width: 25px;
+  padding: 2px 4px;
+  text-align: center;
+  background: var(--color-white);
+  border: 1px solid #737980;
+}
+
+.maker-page .cutout-reset {
+  margin-left: auto;
+}
+
+.maker-page .cutout-tool-status {
+  min-height: 18px;
+  margin: 0 0 7px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.maker-page .check-row {
+  font-family: var(--font-ui);
+  font-size: 12px;
+}
+
+.maker-page .dialog-actions {
+  padding-top: 12px;
+  border-top: 1px solid #8a9097;
+}
+
+@media (max-width: 760px) {
+  .maker-page .maker-header {
+    position: static;
+    padding: 10px 12px;
+  }
+
+  .maker-page .maker-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .maker-page .maker-main {
+    padding: 18px 12px 38px;
+  }
+
+  .maker-page .preview-stage {
+    padding: 42px 12px 14px;
+    box-shadow: 5px 5px 0 rgba(7,21,47,.88), var(--bevel-raised);
+  }
+
+  .maker-page .design-canvas {
+    width: min(88vw, 600px);
+  }
+
+  .maker-page .customizer {
+    margin-top: 22px;
+    box-shadow: 5px 5px 0 rgba(7,21,47,.88), var(--bevel-raised);
+  }
+
+  .maker-page .controls {
+    padding: 17px 14px;
+  }
+
+  .maker-page .tabs button {
+    font-size: 11px;
+  }
+
+  .maker-page .template01-transform {
+    grid-template-columns: 1fr;
+  }
+
+  .maker-page .cutout-reset {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maker-page .button,
+  .maker-page .asset-choice,
+  .maker-page .color-choice {
+    transition: none;
+  }
+}

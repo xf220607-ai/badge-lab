@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>制作中 · 吧唧的衣橱</title><script>if (location.protocol === 'file:') document.documentElement.classList.add('file-protocol');</script>  <script type="module" crossorigin src="/assets/maker-C4tOG5Lj.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/layouts-D6KMggA1.js">
+  <link rel="stylesheet" crossorigin href="/assets/layouts-9PnUAXyS.css">
+  <link rel="stylesheet" crossorigin href="/assets/maker-BcDV0Idy.css">
+</head>
+<body class="maker-page">
+  <header class="maker-header"><a class="brand" href="index.html">吧唧的衣橱<span>制作小桌</span></a><div class="maker-actions"><a class="button quiet" href="index.html">返回衣橱</a><button class="button quiet" id="reset-button">重置</button><button class="button quiet" id="random-button">换个灵感</button><button class="button primary" id="export-button">输出成品 ↓</button></div></header>
+  <p class="local-run-warning" role="alert">当前是直接打开的文件预览，制作功能无法加载。请双击 <code>start.command</code> 或运行 <code>npm start</code>，再访问 <code>http://127.0.0.1:5173/</code>。</p>
+  <main class="maker-main"><section class="preview-stage" aria-label="实时设计预览"><div class="maker-stage-heading"><span>正在制作</span><small>每一次调整，都会即时保存在这张草稿里</small></div><div id="design-canvas" class="design-canvas" role="img" aria-label="当前吧唧稿图预览"></div></section>
+    <section class="customizer" aria-label="设计自定义控制"><div class="customizer-heading"><span>给吧唧换一件衣服</span><small>从下方挑选你喜欢的元素</small></div><div class="tabs" role="tablist" aria-label="编辑类别">
+      <button role="tab" data-tab="character">人物</button><button role="tab" data-tab="background">背景</button><button role="tab" data-tab="pattern">底纹</button><button role="tab" data-tab="front">前景装饰素材</button><button role="tab" data-tab="back">背景装饰素材</button>
+    </div><div id="controls" class="controls"></div></section>
+  </main>
+  <dialog id="cutout-dialog"><form method="dialog" class="cutout-panel"><p class="eyebrow">LOCAL CUTOUT PREVIEW</p><h2>智能抠图</h2><p>智能抠图完成后，可用画笔补回需要保留的区域，或用橡皮擦删除多余区域。图片只在浏览器本地处理。</p><div class="cutout-toolbar" role="toolbar" aria-label="抠图精修工具"><div class="cutout-tool-group" aria-label="选择工具"><button class="cutout-tool is-active" type="button" data-cutout-tool="keep" aria-pressed="true"><span aria-hidden="true">✎</span> 保留画笔</button><button class="cutout-tool" type="button" data-cutout-tool="erase" aria-pressed="false"><span aria-hidden="true">▱</span> 橡皮擦</button></div><label class="brush-size" for="brush-size">笔刷大小 <input id="brush-size" type="range" min="8" max="96" value="36" step="2"><output id="brush-size-output" for="brush-size">36</output></label><button id="reset-cutout-edits" class="cutout-reset" type="button" disabled>重置精修</button></div><div class="cutout-canvas-wrap"><canvas id="cutout-preview" width="420" height="420" aria-label="抠图预览与手动精修画布"></canvas></div><p id="cutout-tool-status" class="cutout-tool-status" aria-live="polite">正在准备智能抠图…</p><label class="check-row"><input id="remove-background" type="checkbox" checked> 使用智能抠图结果</label><div class="dialog-actions"><button value="cancel" class="button quiet">取消</button><button id="confirm-cutout" value="default" class="button primary">确认使用图片</button></div></form></dialog>
+  <input id="image-input" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+  <input id="background-image-input" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+  <canvas id="export-canvas" width="1080" height="1080" hidden></canvas>
+</body></html>

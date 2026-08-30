@@ -1,0 +1,138 @@
+/* Template 01 的圆外区域始终透明；背景和底纹只作用于圆形成品区。 */
+.template01-canvas {
+  background: transparent;
+}
+
+.template01-canvas::before {
+  display: none;
+}
+
+.template01-artwork {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  isolation: isolate;
+  clip-path: circle(var(--template-circle-radius, 46%) at var(--template-circle-x, 50%) var(--template-circle-y, 50%));
+}
+
+.template01-artwork::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: .48;
+  background-image: var(--pattern-image);
+  background-size: var(--pattern-size, auto);
+}
+
+.template01-disc {
+  left: var(--template-circle-x, 50%);
+  top: var(--template-circle-y, 50%);
+  width: var(--template-circle-size, 92%);
+  background-color: var(--template-background-color, #fff4ad);
+  background-image: var(--template-background-image, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: var(--template-background-size, cover);
+}
+
+.character-transform-box {
+  position: absolute;
+  z-index: 10;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  border: 2px solid #168df0;
+  box-sizing: border-box;
+  cursor: move;
+  touch-action: none;
+  transform: translate(-50%, -50%) rotate(var(--rotation));
+  user-select: none;
+}
+
+.character-transform-box.is-dragging {
+  cursor: grabbing;
+}
+
+.character-resize-handle {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  background: #fff;
+  border: 2px solid #168df0;
+  border-radius: 0;
+  box-shadow: none;
+  touch-action: none;
+}
+
+.character-resize-handle:hover,
+.character-resize-handle:active {
+  background: #e8f5ff;
+  box-shadow: none;
+  transform: none;
+}
+
+.character-resize-handle.handle-nw {
+  top: 0;
+  left: 0;
+  cursor: nwse-resize;
+  transform: translate(-50%, -50%);
+}
+
+.character-resize-handle.handle-ne {
+  top: 0;
+  right: 0;
+  cursor: nesw-resize;
+  transform: translate(50%, -50%);
+}
+
+.character-resize-handle.handle-sw {
+  bottom: 0;
+  left: 0;
+  cursor: nesw-resize;
+  transform: translate(-50%, 50%);
+}
+
+.character-resize-handle.handle-se {
+  right: 0;
+  bottom: 0;
+  cursor: nwse-resize;
+  transform: translate(50%, 50%);
+}
+
+.character-resize-handle.handle-nw:hover,
+.character-resize-handle.handle-nw:active {
+  transform: translate(-50%, -50%);
+}
+
+.character-resize-handle.handle-ne:hover,
+.character-resize-handle.handle-ne:active {
+  transform: translate(50%, -50%);
+}
+
+.character-resize-handle.handle-sw:hover,
+.character-resize-handle.handle-sw:active {
+  transform: translate(-50%, 50%);
+}
+
+.character-resize-handle.handle-se:hover,
+.character-resize-handle.handle-se:active {
+  transform: translate(50%, 50%);
+}
+
+.character-size-badge {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  padding: 3px 7px;
+  color: #fff;
+  background: #168df0;
+  border-radius: 4px;
+  font: 700 11px/1.2 Arial, sans-serif;
+  pointer-events: none;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
